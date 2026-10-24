@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  native-ipc:
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-22.04, macos-14]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Build and test
+        run: |
+          cmake -S . -B native-ipc-build -DBUILD_TESTING=ON
+          cmake --build native-ipc-build --config Debug
+          ctest --test-dir native-ipc-build -C Debug --output-on-failure

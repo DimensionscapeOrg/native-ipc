@@ -1,0 +1,32 @@
+<xml>
+	<pragma once="true"/>
+
+	<!-- Listeners and connections: Pipe.h. -->
+	<files id="native-ipc">
+		<compilerflag value="-I${this_dir}/include"/>
+		<file name="${this_dir}/src/Common.cpp"/>
+		<file name="${this_dir}/src/PipeWindows.cpp"/>
+		<file name="${this_dir}/src/PipePosix.cpp"/>
+		<depend name="${this_dir}/include/native_ipc/Config.h"/>
+		<depend name="${this_dir}/include/native_ipc/Pipe.h"/>
+		<depend name="${this_dir}/src/Internal.h"/>
+	</files>
+
+	<!-- The threaded layer over them: Channel.h. Needs native-ipc. -->
+	<files id="native-ipc-channel">
+		<compilerflag value="-I${this_dir}/include"/>
+		<file name="${this_dir}/src/Channel.cpp"/>
+		<depend name="${this_dir}/include/native_ipc/Channel.h"/>
+		<depend name="${this_dir}/include/native_ipc/Config.h"/>
+		<depend name="${this_dir}/include/native_ipc/Pipe.h"/>
+		<depend name="${this_dir}/src/Internal.h"/>
+	</files>
+
+	<!-- Shared memory: SharedMemory.h. Stands alone. -->
+	<files id="native-ipc-shared-memory">
+		<compilerflag value="-I${this_dir}/include"/>
+		<file name="${this_dir}/src/SharedMemory.cpp"/>
+		<depend name="${this_dir}/include/native_ipc/Config.h"/>
+		<depend name="${this_dir}/include/native_ipc/SharedMemory.h"/>
+	</files>
+</xml>

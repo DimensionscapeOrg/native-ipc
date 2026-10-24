@@ -1,0 +1,11 @@
+{
+ "name": "native-ipc",
+ "version": "1.0.0",
+ "url": "https://github.com/DimensionscapeOrg/native-ipc",
+ "license": "Apache",
+ "classPath": "project",
+ "contributors": ["Dimensionscape"],
+ "description": "Local IPC between the processes of one user: framed connections and shared memory, independent of application frameworks.",
+ "tags": ["native", "ipc", "pipe", "socket", "cpp"],
+ "releasenote": "Initial release: listeners, connections and shared memory, extracted from CrossByte, with servers that take any number of clients, a versioned handshake, and a threaded Channel layer."
+}

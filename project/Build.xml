@@ -1,0 +1,45 @@
+<xml>
+	<!--
+		For an hxcpp program that compiles native-ipc into itself:
+		@:buildXml('<include name="${haxelib:native-ipc}/project/Build.xml"/>')
+
+		Every group is compiled with NATIVE_IPC_HXCPP, so a call that waits does
+		so outside hxcpp's collector (see Config.h). Leave a group out with
+		NATIVE_IPC_NO_CHANNEL or NATIVE_IPC_NO_SHARED_MEMORY. A host that links
+		native-ipc some other way (a library of its own, as Lime does) includes
+		Files.xml instead and sets its own flags.
+	-->
+	<pragma once="true"/>
+	<set name="HXCPP_CPP11" value="1"/>
+	<include name="${this_dir}/Files.xml"/>
+
+	<!-- For the generated code that @:includes the headers. -->
+	<files id="haxe">
+		<compilerflag value="-I${this_dir}/include"/>
+	</files>
+	<files id="native-ipc">
+		<compilerflag value="-DNATIVE_IPC_HXCPP"/>
+		<depend files="hxcpp-depends"/>
+	</files>
+	<files id="native-ipc-channel">
+		<compilerflag value="-DNATIVE_IPC_HXCPP"/>
+		<depend files="hxcpp-depends"/>
+	</files>
+	<files id="native-ipc-shared-memory">
+		<compilerflag value="-DNATIVE_IPC_HXCPP"/>
+		<depend files="hxcpp-depends"/>
+	</files>
+
+	<target id="haxe">
+		<files id="native-ipc"/>
+		<files id="native-ipc-channel" unless="NATIVE_IPC_NO_CHANNEL"/>
+		<files id="native-ipc-shared-memory" unless="NATIVE_IPC_NO_SHARED_MEMORY"/>
+		<!-- A pipe's security descriptor and its owner: ConvertStringSecurity-
+		     DescriptorToSecurityDescriptor, GetSecurityInfo and the token calls
+		     live in advapi32. -->
+		<lib name="advapi32.lib" if="windows" unless="mingw"/>
+		<lib name="-ladvapi32" if="mingw"/>
+		<lib name="-lpthread" if="linux"/>
+		<lib name="-lrt" if="linux"/>
+	</target>
+</xml>
